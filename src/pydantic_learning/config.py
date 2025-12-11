@@ -3,6 +3,7 @@
 from functools import lru_cache
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_ai.settings import ModelSettings
 
 
 class AgentSettings(BaseSettings):
@@ -45,6 +46,29 @@ class AgentSettings(BaseSettings):
     temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     max_tokens: int = Field(default=4096, ge=1)
     timeout: float = Field(default=60.0, ge=1.0)
+
+    def to_model_settings(self) -> ModelSettings:
+        """Convert to PydanticAI ModelSettings for use with agents.
+
+        This helper method creates a ModelSettings instance from the configured
+        values, making it easy to apply consistent settings across all agents.
+
+        Returns:
+            ModelSettings: Configured model settings for PydanticAI agents.
+
+        Example:
+            >>> from pydantic_learning.config import settings
+            >>> agent = Agent(
+            ...     settings.default_model,
+            ...     instructions='...',
+            ...     model_settings=settings.to_model_settings(),
+            ... )
+        """
+        return ModelSettings(
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
+            timeout=self.timeout,
+        )
 
 
 class InfraSettings(BaseSettings):
