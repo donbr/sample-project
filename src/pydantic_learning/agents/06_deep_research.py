@@ -1,3 +1,15 @@
+"""Lesson 06: Deep Research - Advanced Multi-Agent Orchestration
+
+This example demonstrates complex multi-agent orchestration.
+It demonstrates:
+- Three-agent system: planner, searcher, analyzer
+- Parallel execution with asyncio.TaskGroup
+- Structured outputs with Pydantic models
+- Web search integration
+
+Run with: uv run python -m pydantic_learning.agents.06_deep_research
+"""
+
 import asyncio
 from typing import Annotated
 
