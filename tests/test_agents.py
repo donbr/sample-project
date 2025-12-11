@@ -3,9 +3,15 @@
 These tests demonstrate how to test agents using TestModel without making API calls.
 """
 
+import sys
+from pathlib import Path
+
 import pytest
 from pydantic_ai import Agent
 from pydantic_ai.models.test import TestModel
+
+# Add src directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 
 @pytest.mark.asyncio
@@ -32,20 +38,20 @@ async def test_agent_with_tools():
     test_model = TestModel()
     agent = Agent(test_model, instructions='You are a calculator assistant.')
 
-    @agent.tool
+    @agent.tool_plain
     def add_numbers(a: int, b: int) -> int:
         """Add two numbers together."""
         return a + b
 
     # Note: TestModel doesn't actually call tools, but we can verify the agent structure
-    assert len(agent._function_tools) == 1
-    assert 'add_numbers' in [tool.name for tool in agent._function_tools.values()]
+    # The tools property returns a dict with tool names as keys
+    assert 'add_numbers' in agent._function_toolset.tools
 
 
 @pytest.mark.asyncio
 async def test_test_model_usage():
     """Test direct usage of TestModel."""
-    model = TestModel(custom_result_text='Custom output')
+    model = TestModel(custom_output_text='Custom output')
 
     # Create a simple agent
     agent = Agent(model, instructions='Test instructions')
@@ -84,11 +90,16 @@ async def test_agent_with_config():
     """Test creating an agent using config settings with TestModel override."""
     from pydantic_learning.config import settings
 
+    # Verify we can access model settings from config
+    model_settings = settings.to_model_settings()
+    assert model_settings is not None
+
     # In tests, we override the model from config with TestModel
     test_model = TestModel()
     agent = Agent(
         test_model,  # Use TestModel instead of settings.default_model
         instructions='You are a helpful assistant.',
+        model_settings=model_settings,  # Use config-derived settings
     )
 
     result = await agent.run('Test query')
