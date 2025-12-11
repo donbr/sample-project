@@ -25,13 +25,15 @@ from temporalio import workflow
 from temporalio.client import Client
 from temporalio.worker import Worker
 
+from pydantic_learning.config import settings
+
 logfire.configure(console=False)
 logfire.instrument_pydantic_ai()
 
 secret = 'potato'
 
 answerer_agent = Agent(
-    'gateway/anthropic:claude-3-5-haiku-latest',
+    settings.haiku_model,
     instructions=f"""
 You are playing a question and answer game.
 Your job is to answer yes/no questions about the secret object truthfully.
@@ -47,7 +49,7 @@ temporal_answerer_agent = TemporalAgent(answerer_agent)
 
 # Agent that asks questions to guess the object
 questioner_agent = Agent(
-    'gateway/anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     instructions="""
 You are playing a question and answer game. You need to guess what object the other player is thinking of.
 Your job is to ask yes/no questions to narrow down the possibilities.

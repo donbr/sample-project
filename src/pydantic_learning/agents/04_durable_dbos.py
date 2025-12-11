@@ -22,6 +22,8 @@ from dbos import DBOS, DBOSConfig, SetWorkflowID, WorkflowHandle
 from pydantic_ai import Agent, AgentRunResult, RunContext, UsageLimits
 from pydantic_ai.durable_exec.dbos import DBOSAgent
 
+from pydantic_learning.config import settings
+
 logfire.configure(console=False)
 logfire.instrument_pydantic_ai()
 
@@ -35,8 +37,7 @@ class Answer(StrEnum):
 
 
 answerer_agent = Agent(
-    'anthropic:claude-3-5-haiku-latest',
-    # 'groq:openai/gpt-oss-120b',
+    settings.haiku_model,
     deps_type=str,
     instructions="""
 You are playing a question and answer game.
@@ -61,7 +62,7 @@ class GameState:
 
 # Agent that asks questions to guess the object
 questioner_agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     deps_type=GameState,
     instructions="""
 You are playing a question and answer game. You need to guess what object the other player is thinking of.

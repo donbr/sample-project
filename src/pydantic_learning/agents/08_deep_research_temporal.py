@@ -28,6 +28,8 @@ from temporalio import workflow
 from temporalio.client import Client
 from temporalio.worker import Worker
 
+from pydantic_learning.config import settings
+
 logfire.configure()
 logfire.instrument_pydantic_ai()
 
@@ -55,7 +57,7 @@ class DeepResearchPlan(BaseModel, **ConfigDict(use_attribute_docstrings=True)):
 
 
 plan_agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     instructions='Analyze the users query and design a plan for deep research to answer their query.',
     output_type=DeepResearchPlan,
     name='plan_agent',
@@ -63,7 +65,7 @@ plan_agent = Agent(
 
 
 search_agent = Agent(
-    'openai-responses:gpt-4.1-mini',
+    settings.haiku_model,
     instructions="""
 Perform a web search for the given terms and return a concise summary of the results.
 
@@ -74,7 +76,7 @@ Include links to original sources whenever possible.
 )
 
 analysis_agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     instructions="""
 Analyze the research from the previous steps and generate a report on the given subject.
 

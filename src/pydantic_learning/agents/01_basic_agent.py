@@ -13,10 +13,12 @@ import asyncio
 
 from pydantic_ai import Agent
 
+from pydantic_learning.config import settings
+
 
 # Create a basic agent with instructions
 agent = Agent(
-    'anthropic:claude-3-5-haiku-latest',
+    settings.basic_model,
     instructions='You are a helpful assistant. Answer questions concisely.',
 )
 
