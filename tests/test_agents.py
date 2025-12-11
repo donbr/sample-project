@@ -60,14 +60,23 @@ async def test_config_import():
     from pydantic_learning.config import settings
 
     # Verify settings exist and have expected attributes
-    assert hasattr(settings, 'basic_model')
-    assert hasattr(settings, 'haiku_model')
-    assert hasattr(settings, 'sonnet_model')
-    assert hasattr(settings, 'gpt4_model')
+    assert hasattr(settings, 'default_model')
+    assert hasattr(settings, 'answerer_model')
+    assert hasattr(settings, 'questioner_model')
+    assert hasattr(settings, 'search_model')
+    assert hasattr(settings, 'analysis_model')
 
-    # Verify default values are set
-    assert settings.basic_model is not None
-    assert settings.haiku_model is not None
+    # Verify default values are set to gpt-5-nano
+    assert settings.default_model == 'openai:gpt-5-nano'
+    assert settings.answerer_model == 'openai:gpt-5-nano'
+    assert settings.questioner_model == 'openai:gpt-5-nano'
+    assert settings.search_model == 'openai:gpt-5-nano'
+    assert settings.analysis_model == 'openai:gpt-5-nano'
+
+    # Verify model settings
+    assert settings.temperature == 0.7
+    assert settings.max_tokens == 4096
+    assert settings.timeout == 60.0
 
 
 @pytest.mark.asyncio
@@ -78,7 +87,7 @@ async def test_agent_with_config():
     # In tests, we override the model from config with TestModel
     test_model = TestModel()
     agent = Agent(
-        test_model,  # Use TestModel instead of settings.basic_model
+        test_model,  # Use TestModel instead of settings.default_model
         instructions='You are a helpful assistant.',
     )
 

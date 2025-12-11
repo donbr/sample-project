@@ -31,7 +31,7 @@ class Answer(StrEnum):
 
 
 answerer_agent = Agent(
-    settings.haiku_model,
+    settings.answerer_model,
     deps_type=str,
     instructions="""
 You are playing a question and answer game.
@@ -53,7 +53,7 @@ class GameState:
 
 # Agent that asks questions to guess the object
 questioner_agent = Agent(
-    settings.gpt4_model,
+    settings.questioner_model,
     deps_type=GameState,
     instructions="""
 You are playing a question and answer game. You need to guess what object the other player is thinking of.
