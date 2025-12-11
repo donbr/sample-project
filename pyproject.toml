@@ -1,7 +1,83 @@
 [project]
 name = "sample-project"
 version = "0.1.0"
-description = "Add your description here"
+description = "PydanticAI Learning Hub - From basics to durable execution"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+license = { text = "MIT" }
+authors = [
+    { name = "Don Brown" }
+]
+keywords = ["pydantic", "pydantic-ai", "agents", "llm", "temporal", "dbos"]
+
+dependencies = [
+    "pydantic-ai>=0.1.0",
+    "pydantic-settings>=2.5.0",
+    "pydantic-evals>=0.1.0",
+    "logfire>=3.0.0",
+    "httpx>=0.27.0",
+    "devtools>=0.12.0",
+    # Durable execution
+    "temporalio>=1.7.0",
+    "dbos>=0.13.0",
+]
+
+[project.optional-dependencies]
+search = [
+    "tavily-python>=0.5.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
+    "dirty-equals>=0.9.0",
+]
+lint = [
+    "ruff>=0.8.0",
+    "pyright>=1.1.390",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+# ============================================================
+# Tool Configuration
+# ============================================================
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "ASYNC",  # flake8-async
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agents"]
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["src", "tests"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
