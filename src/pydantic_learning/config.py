@@ -1,47 +1,78 @@
-"""Central configuration for PydanticAI Learning Hub.
+"""Central configuration for PydanticAI Learning Hub."""
 
-This module uses pydantic-settings to manage configuration from environment variables.
-All model configurations and API settings are centralized here.
-
-Environment variables can be set in a .env file at the project root.
-"""
-
+from functools import lru_cache
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
-    """Application settings loaded from environment variables.
+class AgentSettings(BaseSettings):
+    """Central configuration for all PydanticAI agents.
 
-    Attributes:
-        basic_model: Model for basic examples (lessons 01-02)
-        haiku_model: Claude Haiku model for fast, cost-effective operations
-        sonnet_model: Claude Sonnet model for complex reasoning
-        gpt4_model: GPT-4 model for comparison and multi-agent examples
-        openrouter_api_key: Optional OpenRouter API key for gateway models
-        anthropic_api_key: Optional Anthropic API key for direct Claude access
-        openai_api_key: Optional OpenAI API key for direct GPT access
+    All models default to openai:gpt-5-nano for consistency.
+    Override via environment variables with AGENT_ prefix.
     """
 
-    # Model configurations - defaults use gateway prefix for OpenRouter
-    basic_model: str = 'anthropic:claude-3-5-haiku-latest'
-    haiku_model: str = 'gateway/anthropic:claude-3-5-haiku-latest'
-    sonnet_model: str = 'gateway/anthropic:claude-3-5-sonnet-latest'
-    gpt4_model: str = 'gateway/openai:gpt-4.1'
-
-    # API Keys (optional - will use environment defaults if not set)
-    openrouter_api_key: str | None = None
-    anthropic_api_key: str | None = None
-    openai_api_key: str | None = None
-
-    # Logfire configuration
-    logfire_token: str | None = None
-
     model_config = SettingsConfigDict(
+        env_prefix='AGENT_',
         env_file='.env',
         env_file_encoding='utf-8',
         extra='ignore',
     )
 
+    # All models default to gpt-5-nano
+    default_model: str = Field(
+        default='openai:gpt-5-nano',
+        description='Default model for general agents'
+    )
+    answerer_model: str = Field(
+        default='openai:gpt-5-nano',
+        description='Model for answerer/responder agents'
+    )
+    questioner_model: str = Field(
+        default='openai:gpt-5-nano',
+        description='Model for questioner/planner agents'
+    )
+    search_model: str = Field(
+        default='openai:gpt-5-nano',
+        description='Model for search/web agents'
+    )
+    analysis_model: str = Field(
+        default='openai:gpt-5-nano',
+        description='Model for analysis/synthesis agents'
+    )
 
-# Global settings instance
-settings = Settings()
+    # Model settings
+    temperature: float = Field(default=0.7, ge=0.0, le=2.0)
+    max_tokens: int = Field(default=4096, ge=1)
+    timeout: float = Field(default=60.0, ge=1.0)
+
+
+class InfraSettings(BaseSettings):
+    """Infrastructure configuration for durable execution."""
+
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        extra='ignore',
+    )
+
+    temporal_host: str = Field(default='localhost:7233')
+    temporal_task_queue: str = Field(default='pydantic-learning')
+    dbos_database_url: str = Field(
+        default='postgresql://postgres@localhost:5432/dbos'
+    )
+    logfire_enabled: bool = Field(default=True)
+    logfire_console: bool = Field(default=False)
+
+
+@lru_cache
+def get_agent_settings() -> AgentSettings:
+    return AgentSettings()
+
+
+@lru_cache
+def get_infra_settings() -> InfraSettings:
+    return InfraSettings()
+
+
+# Backward compatibility - expose singleton
+settings = get_agent_settings()

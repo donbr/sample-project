@@ -48,7 +48,7 @@ class DeepResearchPlan(BaseModel, **ConfigDict(use_attribute_docstrings=True)):
 
 
 plan_agent = Agent(
-    settings.sonnet_model,
+    settings.questioner_model,
     instructions='Analyze the users query and design a plan for deep research to answer their query.',
     output_type=DeepResearchPlan,
     name='abstract_plan_agent',
@@ -56,14 +56,14 @@ plan_agent = Agent(
 
 
 search_agent = Agent(
-    settings.haiku_model,  # Using haiku for search since gemini-2.5-flash may not be available
+    settings.search_model,
     instructions='Perform a web search for the given terms and return a detailed report on the results.',
     builtin_tools=[WebSearchTool()],
     name='search_agent',
 )
 
 analysis_agent = Agent(
-    settings.sonnet_model,
+    settings.analysis_model,
     deps_type=AbstractAgent,
     instructions="""
 Analyze the research from the previous steps and generate a report on the given subject.

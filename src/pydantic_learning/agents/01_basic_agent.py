@@ -18,7 +18,7 @@ from pydantic_learning.config import settings
 
 # Create a basic agent with instructions
 agent = Agent(
-    settings.basic_model,
+    settings.default_model,
     instructions='You are a helpful assistant. Answer questions concisely.',
 )
 

@@ -18,7 +18,7 @@ from pydantic_learning.config import settings
 
 
 agent = Agent(
-    settings.basic_model,
+    settings.default_model,
     instructions='You are a helpful assistant with access to utility tools.',
 )
 
