@@ -22,6 +22,8 @@ from pydantic import BaseModel, ConfigDict
 from pydantic_ai import Agent, WebSearchTool, format_as_xml
 from pydantic_ai.durable_exec.dbos import DBOSAgent
 
+from pydantic_learning.config import settings
+
 logfire.configure()
 logfire.instrument_pydantic_ai()
 
@@ -49,7 +51,7 @@ class DeepResearchPlan(BaseModel, **ConfigDict(use_attribute_docstrings=True)):
 
 
 plan_agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     instructions='Analyze the users query and design a plan for deep research to answer their query.',
     output_type=DeepResearchPlan,
     name='plan_agent',
@@ -57,14 +59,14 @@ plan_agent = Agent(
 
 
 search_agent = Agent(
-    'google-vertex:gemini-2.5-flash',
+    settings.haiku_model,
     instructions='Perform a web search for the given terms and return a detailed report on the results.',
     builtin_tools=[WebSearchTool()],
     name='search_agent',
 )
 
 analysis_agent = Agent(
-    'anthropic:claude-sonnet-4-5',
+    settings.sonnet_model,
     instructions="""
 Analyze the research from the previous steps and generate a report on the given subject.
 

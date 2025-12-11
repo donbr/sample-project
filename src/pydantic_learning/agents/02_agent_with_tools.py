@@ -14,9 +14,11 @@ from datetime import datetime
 
 from pydantic_ai import Agent, RunContext
 
+from pydantic_learning.config import settings
+
 
 agent = Agent(
-    'anthropic:claude-3-5-haiku-latest',
+    settings.basic_model,
     instructions='You are a helpful assistant with access to utility tools.',
 )
 
