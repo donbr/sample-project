@@ -1,3 +1,16 @@
+"""Lesson 05: Durable Execution with Temporal
+
+This example demonstrates durable execution using Temporal.
+It demonstrates:
+- Wrapping agents with TemporalAgent
+- Workflow definitions with @workflow.defn
+- Worker setup and execution
+- Resume capability with workflow IDs
+
+Run with: uv run python -m pydantic_learning.agents.05_durable_temporal
+Resume with: uv run python -m pydantic_learning.agents.05_durable_temporal <workflow_id>
+"""
+
 import asyncio
 import sys
 import uuid

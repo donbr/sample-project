@@ -1,3 +1,15 @@
+"""Lesson 07: Deep Research with DBOS Durability
+
+This example demonstrates complex multi-agent orchestration with DBOS durability.
+It demonstrates:
+- Durable deep research workflow
+- Parallel workflow execution with DBOS
+- Resume capability for long-running research
+
+Run with: uv run python -m pydantic_learning.agents.07_deep_research_dbos
+Resume with: uv run python -m pydantic_learning.agents.07_deep_research_dbos <workflow_id>
+"""
+
 import asyncio
 import sys
 import uuid

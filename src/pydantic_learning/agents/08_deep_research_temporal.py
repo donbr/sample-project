@@ -1,3 +1,16 @@
+"""Lesson 08: Deep Research with Temporal Durability
+
+This example demonstrates complex multi-agent orchestration with Temporal durability.
+It demonstrates:
+- Durable deep research workflow with Temporal
+- Parallel agent execution within Temporal workflows
+- Resume capability for long-running research
+- Custom activity timeouts
+
+Run with: uv run python -m pydantic_learning.agents.08_deep_research_temporal
+Resume with: uv run python -m pydantic_learning.agents.08_deep_research_temporal <workflow_id>
+"""
+
 import asyncio
 import os
 import sys

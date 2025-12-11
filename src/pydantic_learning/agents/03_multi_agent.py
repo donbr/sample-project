@@ -1,3 +1,14 @@
+"""Lesson 03: Multi-Agent System
+
+This example demonstrates a multi-agent system where agents interact with each other.
+It demonstrates:
+- Creating multiple agents with different roles
+- Agents calling other agents through tools
+- Coordinated game playing (twenty questions)
+
+Run with: uv run python -m pydantic_learning.agents.03_multi_agent
+"""
+
 import asyncio
 from dataclasses import dataclass
 from enum import StrEnum

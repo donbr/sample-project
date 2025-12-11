@@ -1,3 +1,15 @@
+"""Lesson 09: Evaluation Patterns
+
+This example demonstrates how to evaluate agent performance.
+It demonstrates:
+- Using pydantic-evals for systematic testing
+- Creating evaluation datasets
+- Custom evaluators for metrics
+- Testing across multiple models
+
+Run with: uv run python -m pydantic_learning.agents.09_evals
+"""
+
 import asyncio
 from dataclasses import dataclass
 from typing import Any, TypedDict
@@ -7,7 +19,17 @@ from pydantic_ai import ModelResponse, TextPart, ToolCallPart, UsageLimitExceede
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 from pydantic_evals.evaluators import Evaluator, EvaluatorContext
-from twenty_questions import play, questioner_agent
+
+# Import the multi-agent example to evaluate
+# Note: Python modules can't start with numbers, so we use importlib
+import importlib.util
+import sys
+spec = importlib.util.spec_from_file_location("multi_agent", __file__.replace("09_evals.py", "03_multi_agent.py"))
+multi_agent = importlib.util.module_from_spec(spec)
+sys.modules["multi_agent"] = multi_agent
+spec.loader.exec_module(multi_agent)
+play = multi_agent.play
+questioner_agent = multi_agent.questioner_agent
 
 logfire.configure(console=False)
 logfire.instrument_pydantic_ai()

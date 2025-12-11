@@ -1,3 +1,15 @@
+"""Lesson 04: Durable Execution with DBOS
+
+This example demonstrates durable execution using DBOS.
+It demonstrates:
+- Wrapping agents with DBOSAgent for durability
+- Workflow persistence across restarts
+- Resume capability with workflow IDs
+
+Run with: uv run python -m pydantic_learning.agents.04_durable_dbos
+Resume with: uv run python -m pydantic_learning.agents.04_durable_dbos <workflow_id>
+"""
+
 import asyncio
 import sys
 import uuid
