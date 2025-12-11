@@ -1,0 +1,39 @@
+
+services:
+
+  # Durable Execution - Temporal
+  temporal:
+    image: temporalio/admin-tools:latest
+    entrypoint: ["temporal", "server", "start-dev", "--ip", "0.0.0.0", "--ui-port", "8233"]
+    ports:
+      - "7233:7233"
+      - "8233:8233"
+    environment:
+      - TEMPORAL_CLI_ADDRESS=localhost:7233
+    networks:
+      - learning-network
+
+  # Durable Execution - DBOS (Postgres)
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - learning-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+
+  postgres_data:
+
+networks:
+  learning-network:
+    driver: bridge

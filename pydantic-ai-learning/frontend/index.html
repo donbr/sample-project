@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PydanticAI Interactive Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">PydanticAI <span class="highlight">Learning Hub</span></div>
+            <p class="subtitle">Interactive teaching repository for Agentic patterns</p>
+        </header>
+
+        <main>
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="lesson1">1. Durable Agents</button>
+                <button class="tab-btn" data-tab="lesson2">2. Deep Research</button>
+                <button class="tab-btn" data-tab="lesson3">3. Human-in-the-Loop</button>
+            </nav>
+
+            <div class="content-area">
+                <!-- Lesson 1: Durable Agents -->
+                <section id="lesson1" class="tab-content active">
+                    <div class="lesson-card">
+                        <h2>Lesson 1: Durable Execution</h2>
+                        <p class="description">
+                            Learn how <code>TemporalAgent</code> wraps standard PydanticAI agents to survive crashes.
+                            This lesson runs a simple workflow that is resilient to failures.
+                        </p>
+                        <div class="playground">
+                            <div class="chat-interface">
+                                <div class="chat-history" id="chat-history-1">
+                                    <div class="message system">System: Real Temporal Client Connected.</div>
+                                </div>
+                                <div class="input-area">
+                                    <input type="text" id="input-1" placeholder="Enter your name..." value="Alice">
+                                    <button class="send-btn" onclick="runLesson1()">Start Workflow</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lesson 2: Deep Research -->
+                <section id="lesson2" class="tab-content">
+                    <div class="lesson-card">
+                        <h2>Lesson 2: Deep Research Architecture</h2>
+                        <p class="description">
+                            Orchestrate multiple agents (Planner, Searcher, Analyst) inside a workflow.
+                            This pattern uses <code>asyncio.TaskGroup</code> for parallel execution within Temporal.
+                        </p>
+                        <div class="playground">
+                            <div class="chat-interface">
+                                <div class="chat-history" id="output-2">
+                                    <div class="message system">System: Deep Research Agents Initialized.</div>
+                                </div>
+                                <div class="input-area">
+                                    <input type="text" id="input-2" placeholder="Research topic..."
+                                        value="Quantum Computing">
+                                    <button class="send-btn" onclick="runLesson2()">Plan & Research</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lesson 3: Human Loop -->
+                <section id="lesson3" class="tab-content">
+                    <div class="lesson-card">
+                        <h2>Lesson 3: Human-in-the-Loop</h2>
+                        <p class="description">
+                            Handling long-running state. The workflow asks a question, persists state, and waits for a
+                            response (simulated).
+                            Based on <code>twenty_questions_temporal.py</code>.
+                        </p>
+                        <div class="playground">
+                            <div class="chat-interface">
+                                <div class="chat-history" id="chat-history-3">
+                                    <div class="message system">System: Game Workflow Ready.</div>
+                                </div>
+                                <div class="input-area">
+                                    <input type="text" id="input-3" placeholder="Secret category..." value="Animal">
+                                    <button class="send-btn" onclick="runLesson3()">Start Game</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
